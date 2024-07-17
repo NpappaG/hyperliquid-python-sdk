@@ -4,6 +4,8 @@ import logging
 import threading
 import time
 
+import example_utils
+
 from hyperliquid.exchange import Exchange
 from hyperliquid.info import Info
 from hyperliquid.utils import constants
@@ -20,7 +22,6 @@ from hyperliquid.utils.types import (
     Union,
     UserEventsMsg,
 )
-import example_utils
 
 # How far from the best bid and offer this strategy ideally places orders. Currently set to .3%
 # i.e. if the best bid is $1000, this strategy will place a resting bid at $997
@@ -33,10 +34,10 @@ ALLOWABLE_DEVIATION = 0.5
 
 # The maximum absolute position value the strategy can accumulate in units of the coin.
 # i.e. the strategy will place orders such that it can long up to 1 ETH or short up to 1 ETH
-MAX_POSITION = 1.0
+MAX_POSITION = 100.0
 
 # The coin to add liquidity on
-COIN = "ETH"
+COIN = "WLD"
 
 InFlightOrder = TypedDict("InFlightOrder", {"type": Literal["in_flight_order"], "time": int})
 Resting = TypedDict("Resting", {"type": Literal["resting"], "px": float, "oid": int})
