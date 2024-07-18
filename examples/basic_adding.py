@@ -23,14 +23,11 @@ from hyperliquid.utils.types import (
     UserEventsMsg,
 )
 
-# How far from the best bid and offer this strategy ideally places orders. Currently set to .3%
-# i.e. if the best bid is $1000, this strategy will place a resting bid at $997
-DEPTH = 0.003
+# Adjust the depth to place orders closer to the market price
+DEPTH = 0.001  # Reduced from 0.003
 
-# How far from the target price a resting order can deviate before the strategy will cancel and replace it.
-# i.e. using the same example as above of a best bid of $1000 and targeted depth of .3%. The ideal distance is $3, so
-# bids within $3 * 0.5 = $1.5 will not be cancelled. So any bids > $998.5 or < $995.5 will be cancelled and replaced.
-ALLOWABLE_DEVIATION = 0.5
+# Adjust the allowable deviation to allow more flexibility
+ALLOWABLE_DEVIATION = 1.0  # Increased from 0.5
 
 # The maximum absolute position value the strategy can accumulate in units of the coin.
 # i.e. the strategy will place orders such that it can long up to 1 ETH or short up to 1 ETH
@@ -82,6 +79,9 @@ class BasicAdder:
             logging.debug(
                 f"on_book_update book_price:{book_price} ideal_distance:{ideal_distance} ideal_price:{ideal_price}"
             )
+
+            # Log the best bid/offer prices and the ideal prices
+            print(f"Best {side} price: {book_price}, Ideal {side} price: {ideal_price}")
 
             # If a resting order exists, maybe cancel it
             provide_state = self.provide_state[side]
